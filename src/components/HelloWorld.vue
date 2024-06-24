@@ -84,8 +84,12 @@
 import { ref } from 'vue';
 
 
+//const apiUrl = 'http://localhost:8000/'
+// for dockerimage
+const apiUrl = 'https://abcoden.de/'
+
 const questions = ref<[{ status_id: string, question: string, addition: string }]>();
-fetch('http://localhost:8000/api/country/GER')
+fetch(apiUrl + 'api/country/GER')
   .then(response => response.json())
   .then(data => questions.value = data.questions);
 
@@ -116,7 +120,7 @@ function calcProvisions(): void {
     headers: { "Content-Type": "application/json" },
     body: post_checked_questions
   };
-  fetch('http://localhost:8000/api/calc/GER', requestOptions)
+  fetch(apiUrl + 'api/calc/GER', requestOptions)
     .then(response => response.json())
     .then(data => provisions.value = data);
   console.log(provisions.value)
