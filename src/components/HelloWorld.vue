@@ -36,13 +36,9 @@
             <v-list lines="two">
               <v-list-item v-for="question in questions" :key="question.status_id" :title="question.question"
                 :subtitle="question.addition">
-                <template v-if="hasState(question.status_id)" v-slot:prepend>
-                  <v-icon size="x-large" color="success" icon="mdi-check-circle-outline"
-                    @click="removeState(question.status_id)"></v-icon>
-                </template>
-                <template v-else v-slot:prepend>
-                  <v-icon size="x-large" color="error" icon="mdi-close-circle-outline"
-                    @click=addState(question.status_id)></v-icon>
+                <template v-slot:prepend>
+                  <v-icon size="x-large" :color="getIconColor(question.status_id)" :icon="getIcon(question.status_id)"
+                    @click="changeState(question.status_id)"></v-icon>
                 </template>
               </v-list-item>
             </v-list>
@@ -95,20 +91,27 @@ fetch(apiUrl + 'api/country/GER')
 
 const checked_questions = ref<string[]>([]);
 
-function addState(newState: string): void {
-  checked_questions.value.push(newState);
-  provisions.value = []
-  console.log(checked_questions.value);
-}
-
-function removeState(newState: string): void {
-  checked_questions.value = checked_questions.value.filter(e => e !== newState);
-  provisions.value = []
-  console.log(checked_questions.value);
-}
-
 function hasState(newState: string): boolean {
   return checked_questions.value.includes(newState);
+}
+
+function getIconColor(state: string): string {
+  return (hasState(state) ? "success" : "error")
+}
+
+function changeState(state: string): void {
+  if (hasState(state)) {
+    checked_questions.value = checked_questions.value.filter(e => e !== state);
+  }
+  else {
+    checked_questions.value.push(state);
+  }
+  provisions.value = []
+  console.log(checked_questions.value);
+}
+
+function getIcon(state: string): string {
+  return (hasState(state) ? "mdi-check-circle-outline" : "mdi-close-circle-outline")
 }
 
 const provisions = ref<[{ id: string, name: string, characteristics: string }] | []>();

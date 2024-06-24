@@ -16,7 +16,7 @@
     "allowJs": true,
     "strict": true,
     "strictNullChecks": true,
-    "noUnusedLocals": false, // FIXME, damit der dockerbuild funktioniert, weil 'addState' durch das v-else nie benutzt wird
+    "noUnusedLocals": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
