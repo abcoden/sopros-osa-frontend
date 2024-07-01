@@ -77,14 +77,20 @@
               <v-btn color="primary" variant="elevated" @click=calcProvisions>CALC</v-btn>
             </template>
 
-            <div v-for="gen_provision in generic_provisions " class="ml-3 mt-5 text-subtitle-2">
-              {{ gen_provision.name }}
+            <div v-for="gen_provision in  generic_provisions  " class="ml-3 mt-5 text-subtitle-2">
+              <div class="text-h6 font-weight-bold">{{ gen_provision.name }}</div>
+
               <v-list lines="two">
                 <div v-for="provision in provisions">
-                  <v-list-item v-if="gen_provision.id === provision.provision_id" :key="provision.id"
-                    :title="provision.name" :subtitle="provision.characteristics">
+                  <v-list-item v-if="gen_provision.id === provision.provision_id" :key="provision.id">
+                    <div class="text-h6 font-weight-bold">{{ provision.name }}</div>
+                    {{ provision.characteristics }}
+
                   </v-list-item>
                 </div>
+                <v-list-item v-if="provisions?.filter(item => item.provision_id === gen_provision.id).length == 0">no
+                  provisions
+                </v-list-item>
               </v-list>
             </div>
 
@@ -115,8 +121,10 @@ fetch(apiUrl + 'api/provisions')
 
 
 const countries = ref<{ id: string, name: string }[]>([]);
-countries.value = [{ id: "GER", name: "Deutschland" }, { id: "UK", name: "England" }] // TODO: make API call
 const selected_country = ref<{ id: string, name: string }>({ id: "GER", name: "Deutschland" });
+fetch(apiUrl + 'api/countries')
+  .then(response => response.json())
+  .then(data => countries.value = data);
 
 
 
