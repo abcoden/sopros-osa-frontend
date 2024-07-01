@@ -19,6 +19,23 @@
             variant="outlined">
 
             <template #title>
+              <h2 class="text-h5 font-weight-bold">Select country</h2>
+            </template>
+
+            <v-select v-model="selected_country" :items="countries" item-title="name" item-value="id" label="Select"
+              persistent-hint return-object single-line></v-select>
+          </v-card>
+
+        </v-col>
+      </v-row>
+
+
+      <v-row>
+        <v-col cols="12">
+          <v-card class="py-4" color="surface-variant" append-icon="mdi-rocket-launch-outline" rounded="lg"
+            variant="outlined">
+
+            <template #title>
               <h2 class="text-h5 font-weight-bold">Get started</h2>
             </template>
 
@@ -71,8 +88,6 @@
               </v-list>
             </div>
 
-
-
           </v-card>
         </v-col>
       </v-row>
@@ -81,7 +96,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 
 const apiUrl = 'http://localhost:8000/'
@@ -98,14 +113,18 @@ fetch(apiUrl + 'api/provisions')
   .then(response => response.json())
   .then(data => generic_provisions.value = data);
 
+
+const countries = ref<{ id: string, name: string }[]>([]);
+countries.value = [{ id: "GER", name: "Deutschland" }, { id: "UK", name: "England" }] // TODO: make API call
+const selected_country = ref<{ id: string, name: string }>({ id: "GER", name: "Deutschland" });
+
+
+
+
 const checked_questions = ref<string[]>([]);
 
 function hasState(newState: string): boolean {
   return checked_questions.value.includes(newState);
-}
-
-function getIconColor(state: string): string {
-  return (hasState(state) ? "success" : "error")
 }
 
 function changeState(state: string): void {
@@ -117,6 +136,10 @@ function changeState(state: string): void {
   }
   provisions.value = []
   console.log(checked_questions.value);
+}
+
+function getIconColor(state: string): string {
+  return (hasState(state) ? "success" : "error")
 }
 
 function getIcon(state: string): string {
@@ -132,10 +155,24 @@ function calcProvisions(): void {
     headers: { "Content-Type": "application/json" },
     body: post_checked_questions
   };
-  fetch(apiUrl + 'api/calc/GER', requestOptions)
+  fetch(apiUrl + 'api/calc/' + selected_country.value.id, requestOptions)
     .then(response => response.json())
     .then(data => provisions.value = data);
   console.log(provisions.value)
+}
+
+watch(selected_country, (newItem: { id: string, name: string }, oldItem: { id: string, name: string }) => {
+  if (newItem.id != oldItem.id) {
+    getStates(newItem)
+    provisions.value = []
+    checked_questions.value = []
+  }
+
+})
+function getStates(country: { id: string, name: string }): void {
+  fetch(apiUrl + 'api/country/' + country.id)
+    .then(response => response.json())
+    .then(data => questions.value = data.questions);
 }
 
 </script>
