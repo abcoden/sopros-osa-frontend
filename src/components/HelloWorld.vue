@@ -105,24 +105,21 @@
 import { ref, watch } from 'vue';
 
 
-const apiUrl = 'http://localhost:8000/'
-// for dockerimage
-//const apiUrl = 'https://abcoden.de/'
 
 const questions = ref<[{ status_id: string, question: string, addition: string }]>();
-fetch(apiUrl + 'api/country/GER')
+fetch('/api/country/GER')
   .then(response => response.json())
   .then(data => questions.value = data.questions);
 
 const generic_provisions = ref<[{ id: string, name: string, description: string }]>();
-fetch(apiUrl + 'api/provisions')
+fetch('/api/provisions')
   .then(response => response.json())
   .then(data => generic_provisions.value = data);
 
 
 const countries = ref<{ id: string, name: string }[]>([]);
 const selected_country = ref<{ id: string, name: string }>({ id: "GER", name: "Deutschland" });
-fetch(apiUrl + 'api/countries')
+fetch('/api/countries')
   .then(response => response.json())
   .then(data => countries.value = data);
 
@@ -142,7 +139,7 @@ function changeState(state: string): void {
   else {
     checked_questions.value.push(state);
   }
-  provisions.value = []
+  calcProvisions() // or 'provisions.value = []' for extra call
   console.log(checked_questions.value);
 }
 
@@ -163,7 +160,7 @@ function calcProvisions(): void {
     headers: { "Content-Type": "application/json" },
     body: post_checked_questions
   };
-  fetch(apiUrl + 'api/calc/' + selected_country.value.id, requestOptions)
+  fetch('/api/calc/' + selected_country.value.id, requestOptions)
     .then(response => response.json())
     .then(data => provisions.value = data);
   console.log(provisions.value)
@@ -178,7 +175,7 @@ watch(selected_country, (newItem: { id: string, name: string }, oldItem: { id: s
 
 })
 function getStates(country: { id: string, name: string }): void {
-  fetch(apiUrl + 'api/country/' + country.id)
+  fetch('/api/country/' + country.id)
     .then(response => response.json())
     .then(data => questions.value = data.questions);
 }
