@@ -17,9 +17,6 @@
         <v-col cols="12">
           <v-card class="py-4" color="surface-variant" append-icon="mdi-rocket-launch-outline" rounded="lg"
             variant="outlined">
-            <template #image>
-              <v-img position="top right" />
-            </template>
 
             <template #title>
               <h2 class="text-h5 font-weight-bold">Get started</h2>
@@ -31,11 +28,10 @@
               </div>
             </template>
 
-            <!-- v-overlay opacity=".12" scrim="primary" contained model-value persistent /> -->
-
             <v-list lines="two">
-              <v-list-item v-for="question in questions" :key="question.status_id" :title="question.question"
-                :subtitle="question.addition">
+              <v-list-item v-for="question in questions" :key="question.status_id">
+                <div class="text-h6 font-weight-bold">{{ question.question }}</div>
+                {{ question.addition }}
                 <template v-slot:prepend>
                   <v-icon size="x-large" :color="getIconColor(question.status_id)" :icon="getIcon(question.status_id)"
                     @click="changeState(question.status_id)"></v-icon>
@@ -64,11 +60,19 @@
               <v-btn color="primary" variant="elevated" @click=calcProvisions>CALC</v-btn>
             </template>
 
-            <v-list lines="two">
-              <v-list-item v-for="provision in provisions" :key="provision.id" :title="provision.name"
-                :subtitle="provision.characteristics">
-              </v-list-item>
-            </v-list>
+            <div v-for="gen_provision in generic_provisions " class="ml-3 mt-5 text-subtitle-2">
+              {{ gen_provision.name }}
+              <v-list lines="two">
+                <div v-for="provision in provisions">
+                  <v-list-item v-if="gen_provision.id === provision.provision_id" :key="provision.id"
+                    :title="provision.name" :subtitle="provision.characteristics">
+                  </v-list-item>
+                </div>
+              </v-list>
+            </div>
+
+
+
           </v-card>
         </v-col>
       </v-row>
@@ -80,14 +84,19 @@
 import { ref } from 'vue';
 
 
-//const apiUrl = 'http://localhost:8000/'
+const apiUrl = 'http://localhost:8000/'
 // for dockerimage
-const apiUrl = 'https://abcoden.de/'
+//const apiUrl = 'https://abcoden.de/'
 
 const questions = ref<[{ status_id: string, question: string, addition: string }]>();
 fetch(apiUrl + 'api/country/GER')
   .then(response => response.json())
   .then(data => questions.value = data.questions);
+
+const generic_provisions = ref<[{ id: string, name: string, description: string }]>();
+fetch(apiUrl + 'api/provisions')
+  .then(response => response.json())
+  .then(data => generic_provisions.value = data);
 
 const checked_questions = ref<string[]>([]);
 
@@ -114,7 +123,7 @@ function getIcon(state: string): string {
   return (hasState(state) ? "mdi-check-circle-outline" : "mdi-close-circle-outline")
 }
 
-const provisions = ref<[{ id: string, name: string, characteristics: string }] | []>();
+const provisions = ref<[{ id: string, name: string, characteristics: string, provision_id: string }] | []>();
 function calcProvisions(): void {
   const post_checked_questions = '["' + checked_questions.value.join('", "') + '"]'
   console.log(post_checked_questions)
