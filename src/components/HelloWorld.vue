@@ -136,7 +136,7 @@
               be required.
             </div>
 
-            <div v-for="gen_provision in  generic_provisions  " class="ml-3 mt-5 text-subtitle-2">
+            <div v-for="gen_provision in generic_provisions" class="ml-3 mt-5 text-subtitle-2">
               <div class="text-h6 font-weight-bold">{{ gen_provision.name }}</div>
 
               <v-list lines="two">
