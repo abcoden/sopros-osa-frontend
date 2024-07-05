@@ -1,9 +1,11 @@
 <template>
   <v-container class="fill-height">
     <v-responsive class="align-centerfill-height mx-auto" max-width="900">
-      <v-img class="mb-4" height="150"
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/SiegelUniK%C3%B6ln.svg/1024px-SiegelUniK%C3%B6ln.svg.png" />
-      <!-- src="@/assets/logo.png"  alternativ verwenden wenn man ein Logo als asset hat -->
+      <v-row class="mb-5">
+        <v-img class="mb-4" height="150" src="@/assets/1_DSHS-Logo.jpg" />
+        <v-img class="mb-4" height="150" src="@/assets/01_EN_Co-Funded_by_the_EU_NEG.png" />
+      </v-row>
+      <!-- src="@/assets/01_EN_Co-Funded_by_the_EU_NEG.png"  alternativ verwenden wenn man ein Logo als asset hat -->
 
       <div class="text-center">
         <div class="text-body-2 font-weight-light mb-n1">Welcome to</div>
@@ -107,30 +109,6 @@
         </v-col>
       </v-row>
 
-      <div class="text-left text-body-3 font-weight-light">
-        <h3 class="text-h5 font-weight-bold mt-5 text-center">Filling in the Athlete-Survey</h3>
-        <div class="mt-2">
-          After having read your personal results, you have the chance to use our Survey to paint an even more
-          comprehensive
-          picture about your social protection situation and to share your personal views about it. Through your
-          participation
-          in our Survey, you contribute to the identification of existing gaps and the development of new social
-          protection
-          measures. Ultimately, you support the project team’s endeavour to improve athletes’ welfare in your country
-          and
-          beyond.
-        </div>
-
-        <h3 class="text-h5 font-weight-bold mt-5 text-center">Disclaimer</h3>
-        <div class="mt-2">
-          Please note that the output of the Tools does not offer legal counsel. Your entitlements to certain provisions
-          and
-          measures may depend on individual factors which cannot be captured by the Tool. Professional counsel and
-          advise may
-          be required.
-        </div>
-      </div>
-
       <v-row class="mt-5">
         <v-col cols=" 12">
           <v-card class="py-4" color="surface-variant" append-icon="mdi-calculator" rounded="lg" variant="outlined">
@@ -148,6 +126,15 @@
               </div>
               <v-btn color="primary" variant="elevated" @click=calcProvisions>CALC</v-btn>
             </template>
+            <h3 class="text-h5 font-weight-bold mt-3 text-center">Disclaimer</h3>
+            <div class="ml-3 mt-5">
+              Please note that the output of the Tools does not offer legal counsel. Your entitlements to certain
+              provisions
+              and
+              measures may depend on individual factors which cannot be captured by the Tool. Professional counsel and
+              advise may
+              be required.
+            </div>
 
             <div v-for="gen_provision in  generic_provisions  " class="ml-3 mt-5 text-subtitle-2">
               <div class="text-h6 font-weight-bold">{{ gen_provision.name }}</div>
@@ -155,13 +142,19 @@
               <v-list lines="two">
                 <div v-for="provision in provisions">
                   <v-list-item v-if="gen_provision.id === provision.provision_id" :key="provision.id">
+                    <template v-slot:prepend>
+                      <v-icon size="x-large" :icon="getTypeIcon(provision.type_id)"></v-icon>
+                    </template>
                     <div class="text-h6 font-weight-bold">{{ provision.name }}</div>
                     {{ provision.characteristics }}
 
                   </v-list-item>
                 </div>
-                <v-list-item v-if="provisions?.filter(item => item.provision_id === gen_provision.id).length == 0">no
-                  provisions
+                <v-list-item v-if="provisions?.filter(item => item.provision_id === gen_provision.id).length == 0">
+                  <template v-slot:prepend>
+                    <v-icon size="x-large" icon="mdi-emoticon-sad-outline"></v-icon>
+                  </template>
+                  no provisions
                 </v-list-item>
               </v-list>
             </div>
@@ -169,6 +162,20 @@
           </v-card>
         </v-col>
       </v-row>
+      <div class="text-left text-body-3 font-weight-light">
+        <h3 class="text-h5 font-weight-bold mt-5 text-center">Filling in the Athlete-Survey</h3>
+        <div class="mt-2">
+          After having read your personal results, you have the chance to use our Survey to paint an even more
+          comprehensive
+          picture about your social protection situation and to share your personal views about it. Through your
+          participation
+          in our Survey, you contribute to the identification of existing gaps and the development of new social
+          protection
+          measures. Ultimately, you support the project team’s endeavour to improve athletes’ welfare in your country
+          and
+          beyond.
+        </div>
+      </div>
 
     </v-responsive>
   </v-container>
@@ -182,7 +189,7 @@ import { ref, watch } from 'vue';
 const questions = ref<[{ status_id: string, question: string, addition: string }]>();
 fetch('/api/country/GER')
   .then(response => response.json())
-  .then(data => questions.value = data.questions);
+  .then(data => questions.value = data.questions.concat(data.questions_athlete));
 
 const generic_provisions = ref<[{ id: string, name: string, description: string }]>();
 fetch('/api/provisions')
@@ -224,7 +231,30 @@ function getIcon(state: string): string {
   return (hasState(state) ? "mdi-check-circle-outline" : "mdi-close-circle-outline")
 }
 
-const provisions = ref<[{ id: string, name: string, characteristics: string, provision_id: string }] | []>();
+function getTypeIcon(type_id: string): string {
+  let result = "mdi-torch";
+  if (type_id == "INCOME") {
+    result = "mdi-cash";
+  }
+  else if (type_id == "INCOME") {
+    result = "mdi-cash";
+  }
+  else if (type_id == "LUMP") {
+    result = "mdi-cash";
+  }
+  else if (type_id == "MINCOV") {
+    result = "mdi-cash";
+  }
+  else if (type_id == "KIND") {
+    result = "mdi-handshake";
+  }
+  else if (type_id == "LEAVE") {
+    result = "mdi-clock-outline";
+  }
+  return result;
+}
+
+const provisions = ref<[{ id: string, name: string, provision_id: string, type_id: string, characteristics: string, legal_act: string, additions: string }] | []>();
 function calcProvisions(): void {
   const post_checked_questions = '["' + checked_questions.value.join('", "') + '"]'
   console.log(post_checked_questions)
@@ -250,7 +280,7 @@ watch(selected_country, (newItem: { id: string, name: string }, oldItem: { id: s
 function getStates(country: { id: string, name: string }): void {
   fetch('/api/country/' + country.id)
     .then(response => response.json())
-    .then(data => questions.value = data.questions);
+    .then(data => questions.value = data.questions.concat(data.questions_athlete));
 }
 
 </script>
