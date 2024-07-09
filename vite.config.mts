@@ -44,8 +44,8 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      //'/api': 'https://abcoden.de', // use http://localhost:8000 for local development
-      '/api': 'http://localhost:8000'
+      '/api': 'https://abcoden.de', // use http://localhost:8000 for local development
+      //'/api': 'http://localhost:8000'
     }
   },
 })

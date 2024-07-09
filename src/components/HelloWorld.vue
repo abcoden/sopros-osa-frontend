@@ -19,7 +19,9 @@
           Sports – SOPROS”. The project’s aim is to assess and evaluate the current social protection situation of elite
           athletes
           in Europe.</div>
-        <div class="mt-2">Learn more about the SOPROS Project here (TODO: where Link).</div>
+        <div class="mt-2">Learn more about the SOPROS Project at <a target="_blank"
+            href="https://www.dshs-koeln.de/iesf/sopros">https://www.dshs-koeln.de/iesf/sopros</a>
+        </div>
         <div class="mt-2">Social protection affects our daily lives. Yet, we are often
           not aware of the details of our individual
           situation, nor about our actual social protection entitlements. The Tool offers you the possibility to
@@ -65,11 +67,6 @@
               Please select the country which you represent as an elite athlete. The Tool asks you some simple
               questions which refer to your social status and your membership(s) as an elite athlete. Based on the
               information you provide; an algorithm calculates your personal social protection situation.
-            </div>
-
-            <div class="mr-5 ml-5 mt-3 mb-3">
-              Before submitting your data for analysis, please verify its correctness and read our data protection
-              policy. To submit your data, simply click the button “NAME of the button” (TODO: name Button).
             </div>
 
             <v-select v-model="selected_country" :items="countries" item-title="name" item-value="id" label="Select"
@@ -153,10 +150,10 @@
                             {{ provision.characteristics }}
                             <br />
                             <br />
-                            {{ provision.additions }}
+                            Additions: {{ provision.additions }}
                             <br />
                             <br />
-                            {{ provision.legal_act }}
+                            Legal basis: {{ provision.legal_act }}
                           </v-card-text>
 
                           <v-card-actions>
@@ -183,23 +180,30 @@
               <v-btn color="primary" variant="elevated" @click="postAnswer">Save provisions for
                 Analysis</v-btn>
             </div>
+
+            <div class="ml-3 text-left text-body-3 font-weight-light">
+              <h3 class="text-h5 font-weight-bold mt-5 text-center">Filling in the Athlete-Survey</h3>
+              <div class="mt-2">
+                After having read your personal results, you have the chance to use our Survey to paint an even more
+                comprehensive
+                picture about your social protection situation and to share your personal views about it. Through your
+                participation
+                in our Survey, you contribute to the identification of existing gaps and the development of new social
+                protection
+                measures. Ultimately, you support the project team’s endeavour to improve athletes’ welfare in your
+                country
+                and
+                beyond.
+                <a target="_blank" href="https://ww2.unipark.de/uc/SOPROS_athletes_country">Link to Survey</a>
+              </div>
+              <h3 class="text-h5 font-weight-bold mt-5">Link to Survey: <a target="_blank"
+                  href="https://ww2.unipark.de/uc/SOPROS_athletes_country">https://ww2.unipark.de/uc/SOPROS_athletes_country</a>
+              </h3>
+              <h3 class="text-h5 font-weight-bold mt-5">ID: {{ answer_id }}</h3>
+            </div>
           </v-card>
         </v-col>
       </v-row>
-      <div class="text-left text-body-3 font-weight-light">
-        <h3 class="text-h5 font-weight-bold mt-5 text-center">Filling in the Athlete-Survey</h3>
-        <div class="mt-2">
-          After having read your personal results, you have the chance to use our Survey to paint an even more
-          comprehensive
-          picture about your social protection situation and to share your personal views about it. Through your
-          participation
-          in our Survey, you contribute to the identification of existing gaps and the development of new social
-          protection
-          measures. Ultimately, you support the project team’s endeavour to improve athletes’ welfare in your country
-          and
-          beyond.
-        </div>
-      </div>
 
     </v-responsive>
   </v-container>
@@ -231,7 +235,7 @@ fetch('/api/countries')
 
 
 const checked_questions = ref<string[]>([]);
-let answer_id = ref<string>("")
+const answer_id = ref<string>("Please click the button 'SAVE PROVISIONS FOR ANALYSIS' to generate a ID")
 
 function hasState(newState: string): boolean {
   return checked_questions.value.includes(newState);
@@ -245,7 +249,7 @@ function changeState(state: string): void {
     checked_questions.value.push(state);
   }
   calcProvisions() // or 'provisions.value = []' for extra call
-  console.log(checked_questions.value);
+  //console.log(checked_questions.value);
 }
 
 function getIconColor(state: string): string {
@@ -281,7 +285,7 @@ function getTypeIcon(type_id: string): string {
 
 function postAnswer(): void {
   const post_checked_questions = '["' + checked_questions.value.join('", "') + '"]'
-  console.log(post_checked_questions)
+  //(post_checked_questions)
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -289,14 +293,14 @@ function postAnswer(): void {
   };
   fetch('/api/answer?country_id=' + selected_country.value.id, requestOptions)
     .then(response => response.json())
-    .then(data => answer_id = data.id);
-  console.log(answer_id)
+    .then(data => answer_id.value = data.id);
+  //console.log(answer_id.value)
 }
 
 const provisions = ref<[{ id: string, name: string, provision_id: string, type_id: string, characteristics: string, legal_act: string, additions: string }] | []>();
 function calcProvisions(): void {
   const post_checked_questions = '["' + checked_questions.value.join('", "') + '"]'
-  console.log(post_checked_questions)
+  //console.log(post_checked_questions)
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -305,7 +309,7 @@ function calcProvisions(): void {
   fetch('/api/calc/' + selected_country.value.id, requestOptions)
     .then(response => response.json())
     .then(data => provisions.value = data);
-  console.log(provisions.value)
+  //console.log(provisions.value)
 }
 
 watch(selected_country, (newItem: { id: string, name: string }, oldItem: { id: string, name: string }) => {
