@@ -294,8 +294,8 @@ function postAnswer(): void {
   };
   fetch('/api/answer?country_id=' + selected_country.value.id, requestOptions)
     .then(response => response.json())
-    .then(data => answer_id.value = data.id);
-  //console.log(answer_id.value)
+    .then(data => answer_id.value = data.id)
+    .then(saveAnswerIdToClipboard => navigator.clipboard.writeText(answer_id.value));
 }
 
 const provisions = ref<[{ id: string, name: string, provision_id: string, type_id: string, characteristics: string, legal_act: string, additions: string }] | []>();
