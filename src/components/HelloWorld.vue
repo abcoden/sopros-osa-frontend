@@ -174,13 +174,6 @@
                 </v-list-item>
               </v-list>
             </div>
-
-
-            <div class="ml-3 mt-5 text-subtitle-2 text-center">
-              <v-btn color="primary" variant="elevated" @click="postAnswer">Save provisions for
-                Analysis</v-btn>
-            </div>
-
             <div class="ml-3 text-left text-body-3 font-weight-light">
               <h3 class="text-h5 font-weight-bold mt-5 text-center">Filling in the Athlete-Survey</h3>
               <div class="mt-2">
@@ -194,11 +187,15 @@
                 country
                 and
                 beyond.
-                <a target="_blank" href="https://ww2.unipark.de/uc/SOPROS_athletes_country">Link to Survey</a>
               </div>
-              <h3 class="text-h5 font-weight-bold mt-5">Link to Survey: <a target="_blank"
-                  href="https://ww2.unipark.de/uc/SOPROS_athletes_country">https://ww2.unipark.de/uc/SOPROS_athletes_country</a>
-              </h3>
+
+              <div class="ml-3 mt-5 text-subtitle-2 text-center">
+                <v-btn color="primary" variant="elevated" @click="postAnswer">Save provisions for Analysis</v-btn>
+              </div>
+              <div class="ml-3 mt-5 text-subtitle-2 text-center">
+                <v-btn color="primary" variant="elevated" href="https://ww2.unipark.de/uc/SOPROS_athletes_country"
+                  @click="copyAnswerIdToClipboard" target="_blank">Jump to Survey</v-btn>
+              </div>
               <h3 class="text-h5 font-weight-bold mt-5">ID: {{ answer_id }}</h3>
             </div>
           </v-card>
@@ -236,6 +233,10 @@ fetch('/api/countries')
 
 const checked_questions = ref<string[]>([]);
 const answer_id = ref<string>("Please click the button 'SAVE PROVISIONS FOR ANALYSIS' to generate a ID")
+
+function copyAnswerIdToClipboard() {
+  navigator.clipboard.writeText(answer_id.value)
+}
 
 function hasState(newState: string): boolean {
   return checked_questions.value.includes(newState);
