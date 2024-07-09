@@ -2,8 +2,8 @@
   <v-container class="fill-height">
     <v-responsive class="align-centerfill-height mx-auto" max-width="900">
       <v-row class="mb-5">
-        <v-img class="mb-4" height="150" src="@/assets/1_DSHS-Logo.jpg" />
-        <v-img class="mb-4" height="150" src="@/assets/01_EN_Co-Funded_by_the_EU_NEG.png" />
+        <v-img class="mb-4 mt-4 " height="150" src="@/assets/01_SOPROS_sq.png" />
+        <v-img class="mb-4 mt-4" height="150" src="@/assets/01_EN_Co-Funded_by_the_EU_NEG.png" />
       </v-row>
       <!-- src="@/assets/01_EN_Co-Funded_by_the_EU_NEG.png"  alternativ verwenden wenn man ein Logo als asset hat -->
 
@@ -120,12 +120,6 @@
               <h2 class="text-h5 font-weight-bold">Current provisions</h2>
             </template>
 
-            <template #subtitle>
-              <div class="text-subtitle-1">
-                After each change in 'States' click the button 'CALC'
-              </div>
-              <v-btn color="primary" variant="elevated" @click=calcProvisions>CALC</v-btn>
-            </template>
             <h3 class="text-h5 font-weight-bold mt-3 text-center">Disclaimer</h3>
             <div class="ml-3 mt-5">
               Please note that the output of the Tools does not offer legal counsel. Your entitlements to certain
@@ -145,9 +139,34 @@
                     <template v-slot:prepend>
                       <v-icon size="x-large" :icon="getTypeIcon(provision.type_id)"></v-icon>
                     </template>
-                    <div class="text-h6 font-weight-bold">{{ provision.name }}</div>
-                    {{ provision.characteristics }}
+                    <v-dialog max-width="700">
+                      <template v-slot:activator="{ props: activatorProps }">
 
+                        <div v-bind="activatorProps" class="text-h6 font-weight-bold">{{ provision.name }}</div>
+                        <div v-bind="activatorProps">{{ provision.characteristics }}</div>
+
+                      </template>
+
+                      <template v-slot:default="{ isActive }">
+                        <v-card :title="provision.name">
+                          <v-card-text>
+                            {{ provision.characteristics }}
+                            <br />
+                            <br />
+                            {{ provision.additions }}
+                            <br />
+                            <br />
+                            {{ provision.legal_act }}
+                          </v-card-text>
+
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+
+                            <v-btn text="Close" @click="isActive.value = false"></v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </template>
+                    </v-dialog>
                   </v-list-item>
                 </div>
                 <v-list-item v-if="provisions?.filter(item => item.provision_id === gen_provision.id).length == 0">
@@ -159,6 +178,11 @@
               </v-list>
             </div>
 
+
+            <div class="ml-3 mt-5 text-subtitle-2 text-center">
+              <v-btn color="primary" variant="elevated" @click="postAnswer">Save provisions for
+                Analysis</v-btn>
+            </div>
           </v-card>
         </v-col>
       </v-row>
@@ -207,6 +231,7 @@ fetch('/api/countries')
 
 
 const checked_questions = ref<string[]>([]);
+let answer_id = ref<string>("")
 
 function hasState(newState: string): boolean {
   return checked_questions.value.includes(newState);
@@ -252,6 +277,20 @@ function getTypeIcon(type_id: string): string {
     result = "mdi-clock-outline";
   }
   return result;
+}
+
+function postAnswer(): void {
+  const post_checked_questions = '["' + checked_questions.value.join('", "') + '"]'
+  console.log(post_checked_questions)
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: post_checked_questions
+  };
+  fetch('/api/answer?country_id=' + selected_country.value.id, requestOptions)
+    .then(response => response.json())
+    .then(data => answer_id = data.id);
+  console.log(answer_id)
 }
 
 const provisions = ref<[{ id: string, name: string, provision_id: string, type_id: string, characteristics: string, legal_act: string, additions: string }] | []>();
