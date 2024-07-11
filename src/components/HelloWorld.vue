@@ -90,7 +90,7 @@
               The Tool asks you some simple
               questions which refer to your social status and your membership(s) as an elite athlete. Based on the
               information you provide an algorithm calculates your personal social protection situation.
-              <p></p>
+              <br></br>
               If you click on the outcome for each provision, further information can be accessed.
             </div>
 
@@ -175,12 +175,12 @@
                   no provisions
                 </v-list-item>
               </v-list>
+            </div>
+            <div class="ml-3 text-left text-body-3 font-weight-light">
               <div class="mt-3">
                 To save your personal results, please use the print function of your browser and save it as pdf
                 document.
               </div>
-            </div>
-            <div class="ml-3 text-left text-body-3 font-weight-light">
               <h3 class="text-h5 font-weight-bold mt-5 text-center">Filling in the Athlete-Survey</h3>
               <div class="mt-2">
                 After having read your personal results, you have the chance to use our Survey to paint an even more
