@@ -66,9 +66,7 @@
               <h2 class="text-h5 font-weight-bold">Select country</h2>
             </template>
             <div class="mr-5 ml-5">
-              Please select the country which you represent as an elite athlete. The Tool asks you some simple
-              questions which refer to your social status and your membership(s) as an elite athlete. Based on the
-              information you provide; an algorithm calculates your personal social protection situation.
+              Please select the country which you represent as an elite athlete.
             </div>
 
             <v-select v-model="selected_country" :items="countries" item-title="name" item-value="id" label="Select"
@@ -88,11 +86,13 @@
               <h2 class="text-h5 font-weight-bold">Get started</h2>
             </template>
 
-            <template #subtitle>
-              <div class="text-subtitle-1">
-                Check the needed States
-              </div>
-            </template>
+            <div class="mr-5 ml-5 mb-3">
+              The Tool asks you some simple
+              questions which refer to your social status and your membership(s) as an elite athlete. Based on the
+              information you provide an algorithm calculates your personal social protection situation.
+              <p></p>
+              If you click on the outcome for each provision, further information can be accessed.
+            </div>
 
             <v-list lines="two">
               <v-list-item v-for="question in questions" :key="question.status_id">
