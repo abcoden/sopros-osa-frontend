@@ -102,6 +102,9 @@
                   <v-icon size="x-large" :color="getIconColor(question.status_id)" :icon="getIcon(question.status_id)"
                     @click="changeState(question.status_id)"></v-icon>
                 </template>
+                <template v-slot:append>
+                  <div>{{ question.status_id }}</div>
+                </template>
               </v-list-item>
             </v-list>
           </v-card>
@@ -137,6 +140,9 @@
                   <v-list-item v-if="gen_provision.id === provision.provision_id" :key="provision.id">
                     <template v-slot:prepend>
                       <v-icon size="x-large" :icon="getTypeIcon(provision.type_id)"></v-icon>
+                    </template>
+                    <template v-slot:append>
+                      <div>{{ provision.status_id }}</div>
                     </template>
                     <v-dialog max-width="700">
                       <template v-slot:activator="{ props: activatorProps }">
@@ -310,7 +316,7 @@ function postAnswer(): void {
     .then(saveAnswerIdToClipboard => navigator.clipboard.writeText(answer_id.value));
 }
 
-const provisions = ref<[{ id: string, name: string, provision_id: string, type_id: string, characteristics: string, legal_act: string, additions: string }] | []>();
+const provisions = ref<[{ id: string, name: string, provision_id: string, type_id: string, status_id: string, characteristics: string, legal_act: string, additions: string }] | []>();
 function calcProvisions(): void {
   const post_checked_questions = '["' + checked_questions.value.join('", "') + '"]'
   //console.log(post_checked_questions)
