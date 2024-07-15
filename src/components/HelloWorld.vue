@@ -142,20 +142,20 @@
                       <template v-slot:activator="{ props: activatorProps }">
 
                         <div v-bind="activatorProps" class="text-h6 font-weight-bold">{{ provision.name }}</div>
-                        <div v-bind="activatorProps">{{ provision.characteristics }}</div>
+                        <div v-bind="activatorProps" v-html="provision.characteristics"></div>
 
                       </template>
 
                       <template v-slot:default="{ isActive }">
                         <v-card :title="provision.name">
                           <v-card-text>
-                            {{ provision.characteristics }}
+                            <div v-html="provision.characteristics"></div>
                             <br />
                             <br />
-                            Additions: {{ provision.additions }}
+                            Additions: <div v-html="provision.additions"></div>
                             <br />
                             <br />
-                            Legal basis: {{ provision.legal_act }}
+                            Legal basis: <div v-html="provision.legal_act"></div>
                           </v-card-text>
 
                           <v-card-actions>
