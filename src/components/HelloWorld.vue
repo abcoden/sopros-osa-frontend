@@ -135,7 +135,8 @@
             <div v-for="gen_provision in generic_provisions" class="ml-3 mt-16 text-subtitle-2">
               <div class="text-h4 font-weight-bold"
                 v-if="provisions?.filter(item => item.provision_id === gen_provision.id).length != 0 || !['AII', 'APEN', 'PREG', 'PAR', 'OTHER'].includes(gen_provision.id)">
-                {{ gen_provision.name }}</div>
+                {{ gen_provision.name }}
+              </div>
 
               <v-list lines="two"
                 v-if="provisions?.filter(item => item.provision_id === gen_provision.id).length != 0 || !['AII', 'APEN', 'PREG', 'PAR', 'OTHER'].includes(gen_provision.id)">
@@ -150,7 +151,10 @@
                     <v-dialog max-width="700">
                       <template v-slot:activator="{ props: activatorProps }">
 
-                        <div v-bind="activatorProps" class="text-h6 font-weight-bold">{{ provision.name }}</div>
+                        <div v-bind="activatorProps" class="text-h6 font-weight-bold">{{ provision.name }}
+
+                          <v-icon size="x-medium" icon="mdi-plus"></v-icon>
+                        </div>
                         <div v-bind="activatorProps" v-html="provision.characteristics"></div>
 
                       </template>
@@ -169,7 +173,6 @@
 
                           <v-card-actions>
                             <v-spacer></v-spacer>
-
                             <v-btn text="Close" @click="isActive.value = false"></v-btn>
                           </v-card-actions>
                         </v-card>
