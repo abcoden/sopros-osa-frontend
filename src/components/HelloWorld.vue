@@ -9,8 +9,13 @@
         <v-btn @click="toggleTheme">Light / Dark Mode</v-btn>
       </div>
       <!-- src="@/assets/01_EN_Co-Funded_by_the_EU_NEG.png"  alternativ verwenden wenn man ein Logo als asset hat -->
+      <div class="text-center">
+        <h1 class="text-center text-h2 mt-16 font-weight-bold">Athlete Social Protection Check</h1>
+        <!-- <iframe class="mt-5 mb-3" width="560" height="315" src="https://www.youtube.com/embed/hCribgzayYo"
+          frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe> -->
+      </div>
 
-      <h1 class="text-center text-h2 mt-16 font-weight-bold">Athlete Social Protection Check</h1>
       <div class="text-left text-body-3 font-weight-light">
         <div class="mt-2">This Self-Assessment Tool was developed within the
           EU-funded Erasmus+ Project “Assessing, Evaluating and Implementing Athletes' Social Protection in Olympic
