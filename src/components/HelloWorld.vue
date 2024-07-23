@@ -202,9 +202,28 @@
 
               <div class="ml-3 mt-5 text-subtitle-2 text-center">
                 <v-snackbar :timeout="2000" color="success">
-                  <template v-slot:activator="{ props }">
-                    <v-btn color="primary" variant="elevated" v-bind="props" @click="postAnswer">Save provisions for
-                      Analysis</v-btn>
+                  <template v-slot:activator="{ props: snackbarProps }">
+                    <v-dialog max-width="700">
+                      <template v-slot:activator="{ props: activatorProps }">
+                        <v-btn color="primary" variant="elevated" v-bind="activatorProps">Save provisions for
+                          Analysis</v-btn>
+                      </template>
+
+                      <template v-slot:default="{ isActive }">
+                        <v-card title="Save Provisions">
+                          <v-card-text>
+                            Your selected states an provisions will be saved for analysis.
+                            An ID is generated, which should be used for the survey
+                          </v-card-text>
+
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn v-bind="snackbarProps" text="OK" @click="postAnswerAndClose(isActive)"></v-btn>
+                            <v-btn text="Close" @click="isActive.value = false"></v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </template>
+                    </v-dialog>
                   </template>
                   ID '<strong>{{ answer_id }}</strong>' copied to clipboard
                 </v-snackbar>
@@ -301,6 +320,11 @@ function postAnswer(): void {
     .then(response => response.json())
     .then(data => answer_id.value = data.id)
     .then(saveAnswerIdToClipboard => navigator.clipboard.writeText(answer_id.value));
+}
+
+function postAnswerAndClose(isActive: { value: boolean }): void {
+  postAnswer()
+  isActive.value = false
 }
 
 
