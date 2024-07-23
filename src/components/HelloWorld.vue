@@ -9,57 +9,22 @@
         <v-btn @click="toggleTheme">Light / Dark Mode</v-btn>
       </div>
       <!-- src="@/assets/01_EN_Co-Funded_by_the_EU_NEG.png"  alternativ verwenden wenn man ein Logo als asset hat -->
+
+
+
       <div class="text-center">
         <h1 class="text-center text-h2 mt-16 font-weight-bold">Athlete Social Protection Check</h1>
-        <iframe class="mt-5" width="560" height="315" src="https://www.youtube.com/embed/hCribgzayYo" frameborder="0"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        <div class="ml-3 mt-5 mb- text-subtitle-2 text-center">
-
-          <v-btn class="ml-5" color="primary" variant="elevated" href="https://ww2.unipark.de/uc/SOPROS_athlete_ww/"
-            @click="copyAnswerIdToClipboard" target="_blank">Jump to Organizazion Survey</v-btn>
-        </div>
-      </div>
-
-      <div class="text-left text-body-3 font-weight-light">
-        <div class="mt-2">This Self-Assessment Tool was developed within the
+        <div class="text-left mt-12">This Self-Assessment Tool was developed within the
           EU-funded Erasmus+ Project “Assessing, Evaluating and Implementing Athletes' Social Protection in Olympic
-          Sports – SOPROS”. The project’s aim is to assess and evaluate the current social protection situation of elite
-          athletes
-          in Europe.</div>
-        <div class="mt-2">Learn more about the SOPROS Project <a target="_blank"
-            href="https://www.dshs-koeln.de/iesf/sopros">here</a>.
+          Sports – <a target="_blank" href="https://www.dshs-koeln.de/iesf/sopros">SOPROS</a>".
         </div>
-        <div class="mt-2">Social protection affects our daily lives. Yet, we are often
-          not aware of the details of our individual
-          situation, nor about our actual social protection entitlements. The Tool offers you the possibility to
-          self-assess your current social protection situation as an elite athlete in your country.
+        <!-- <iframe class="mt-5" width="800" height="400" src="https://www.youtube.com/embed/hCribgzayYo" frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+        <div class="ml-3 mt-5 mb- text-subtitle-2 text-center">
+          <v-btn class="ml-5" color="primary" variant="elevated"
+            href="https://www.dshs-koeln.de/en/institute-of-european-sport-development-and-leisure-studies/research-projects/ongoing-projects/sopros/resources-on-social-protection/"
+            @click="copyAnswerIdToClipboard" target="_blank">Learn more about Social Protection</v-btn>
         </div>
-
-        <h3 class="text-h5 font-weight-bold mt-5 text-center">Social Protection</h3>
-
-        <div class="mt-2">According to the International Labour Organization and the
-          European Union, social protection is a human right. You can learn more about social protection <a
-            target="_blank"
-            href="https://www.dshs-koeln.de/en/institute-of-european-sport-development-and-leisure-studies/research-projects/ongoing-projects/sopros/resources-on-social-protection">here</a>.
-        </div>
-        <div class="mt-2">As an elite athlete, your social protection situation is
-          determined by two components:</div>
-
-        <h4 class="text-h7 font-weight-bold mt-5 ml-5">Statutory provisions</h4>
-        <div class="mt-2">The national laws of your country determine your social protection situation. These provisions
-          <u>depend on your social status</u> under national law, for example as a resident, employee, self-employed
-          person, or
-          elite athlete. International organisations have developed a catalogue of 10 statutory provisions of social
-          protection to which everyone should have access.
-        </div>
-
-        <h4 class="text-h7 font-weight-bold mt-5 ml-5">Athlete-specific measures</h4>
-        <div class="mt-2">Governments and private sport organisations develop policies that <u>only apply to elite
-            athletes</u>. These measures may depend on your membership in a national team or cadre, and your personal
-          contractual relationships with the stakeholders running elite sport programmes. Athlete-specific measures
-          include a specific accident or injury insurance, pregnancy and maternity/paternity policies, specific athlete
-          pensions or retirement funds and other measures that are in place to protect you against specific risks
-          associated with your sporting practice and changing life circumstances.</div>
       </div>
 
       <div class="py-4" />
@@ -69,11 +34,8 @@
           <v-card class="py-4" color="surface-variant" append-icon="mdi-earth" rounded="lg" variant="outlined">
 
             <template #title>
-              <h2 class="text-h5 font-weight-bold">Select country</h2>
+              <h2 class="text-h5 font-weight-bold">Select country to start Athlete Social Protection Check</h2>
             </template>
-            <div class="mr-5 ml-5">
-              Please select the country which you represent as an elite athlete.
-            </div>
 
             <v-select v-model="selected_country" :items="countries" item-title="name" item-value="id" label="Select"
               persistent-hint return-object single-line></v-select>
@@ -289,7 +251,7 @@ function getStates(country: { id: string, name: string }): void {
 
 
 const countries = ref<{ id: string, name: string }[]>([]);
-const selected_country = ref<{ id: string, name: string }>({ id: "EMPTY", name: "no or other Country" });
+const selected_country = ref<{ id: string, name: string }>({ id: "EMPTY", name: "not selected yet" });
 fetch('/api/countries')
   .then(response => response.json())
   .then(data => countries.value = data);
