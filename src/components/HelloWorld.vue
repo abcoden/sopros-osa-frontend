@@ -311,6 +311,7 @@ function getStatusIcon(type_id: string): string {
   if (type_id == "CIT") {
     result = "mdi-home";
   }
+  // TODO: nicht da
   else if (type_id == "STU") {
     result = "mdi-account-school";
   }
@@ -326,6 +327,7 @@ function getStatusIcon(type_id: string): string {
   else if (type_id == "MIL") {
     result = "mdi-star-circle";
   }
+  // TODO: nicht da
   else if (type_id == "CS") {
     result = "mdi-account-tie-hat";
   }
