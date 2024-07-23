@@ -103,7 +103,7 @@
                     @click="changeState(question.status_id)"></v-icon>
                 </template>
                 <template v-slot:append>
-                  <div>{{ question.status_id }}</div>
+                  <v-icon size="x-large" :icon="getStatusIcon(question.status_id)"></v-icon>
                 </template>
               </v-list-item>
             </v-list>
@@ -111,7 +111,7 @@
         </v-col>
       </v-row>
 
-      <v-row class="mt-5">
+      <v-row class="mt-5" v-if="provisions">
         <v-col cols=" 12">
           <v-card class="py-4" color="surface-variant" append-icon="mdi-calculator" rounded="lg" variant="outlined">
             <template #image>
@@ -132,17 +132,20 @@
               be required.
             </div>
 
-            <div v-for="gen_provision in generic_provisions" class="ml-3 mt-5 text-subtitle-2">
-              <div class="text-h6 font-weight-bold">{{ gen_provision.name }}</div>
+            <div v-for="gen_provision in generic_provisions" class="ml-3 mt-16 text-subtitle-2">
+              <div class="text-h4 font-weight-bold"
+                v-if="provisions?.filter(item => item.provision_id === gen_provision.id).length != 0 || !['AII', 'APEN', 'PREG', 'PAR', 'OTHER'].includes(gen_provision.id)">
+                {{ gen_provision.name }}</div>
 
-              <v-list lines="two">
+              <v-list lines="two"
+                v-if="provisions?.filter(item => item.provision_id === gen_provision.id).length != 0 || !['AII', 'APEN', 'PREG', 'PAR', 'OTHER'].includes(gen_provision.id)">
                 <div v-for="provision in provisions">
                   <v-list-item v-if="gen_provision.id === provision.provision_id" :key="provision.id">
                     <template v-slot:prepend>
                       <v-icon size="x-large" :icon="getTypeIcon(provision.type_id)"></v-icon>
                     </template>
                     <template v-slot:append>
-                      <div>{{ provision.status_id }}</div>
+                      <v-icon size="x-large" :icon="getStatusIcon(provision.status_id)"></v-icon>
                     </template>
                     <v-dialog max-width="700">
                       <template v-slot:activator="{ props: activatorProps }">
@@ -174,7 +177,8 @@
                     </v-dialog>
                   </v-list-item>
                 </div>
-                <v-list-item v-if="provisions?.filter(item => item.provision_id === gen_provision.id).length == 0">
+                <v-list-item
+                  v-if="provisions?.filter(item => item.provision_id === gen_provision.id).length == 0 && !['AII', 'APEN', 'PREG', 'PAR', 'OTHER'].includes(gen_provision.id)">
                   <template v-slot:prepend>
                     <v-icon size="x-large" icon="mdi-emoticon-sad-outline"></v-icon>
                   </template>
@@ -298,6 +302,65 @@ function getTypeIcon(type_id: string): string {
   }
   else if (type_id == "LEAVE") {
     result = "mdi-clock-outline";
+  }
+  return result;
+}
+
+function getStatusIcon(type_id: string): string {
+  let result = "mdi-torch";
+  if (type_id == "CIT") {
+    result = "mdi-home";
+  }
+  else if (type_id == "STU") {
+    result = "mdi-account-school";
+  }
+  else if (type_id == "EMP") {
+    result = "mdi-account-tie";
+  }
+  else if (type_id == "MIN") {
+    result = "mdi-account-clock";
+  }
+  else if (type_id == "FWDL") {
+    result = "mdi-hand-back-left-outline";
+  }
+  else if (type_id == "MIL") {
+    result = "mdi-star-circle";
+  }
+  else if (type_id == "CS") {
+    result = "mdi-account-tie-hat";
+  }
+  else if (type_id == "SELF") {
+    result = "mdi-account-star";
+  }
+  else if (type_id == "DSHBAS") {
+    result = "mdi-account-multiple-outline";
+  }
+  else if (type_id == "DSHTOP") {
+    result = "mdi-account-multiple-plus-outline";
+  }
+  else if (type_id == "LBS") {
+    result = "mdi-run";
+  }
+  else if (type_id == "NOC") {
+    result = "mdi-medal-outline";
+  }
+  else if (type_id == "UKSWCP") {
+    result = "mdi-medal-outline";
+  }
+  else if (type_id == "APA") {
+    result = "mdi-account-cash-outline";
+  }
+  else if (type_id == "EAS") {
+    result = "mdi-account-cash-outline";
+  }
+  else if (type_id == "NTM") {
+    result = "mdi-account-multiple-outline";
+  }
+  else if (type_id == "SCM") {
+    result = "mdi-run";
+  }
+  else if (type_id == "OGM") {
+    result = "mdi-medal-outline";
   }
   return result;
 }
