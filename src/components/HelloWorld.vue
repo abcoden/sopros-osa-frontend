@@ -11,9 +11,13 @@
       <!-- src="@/assets/01_EN_Co-Funded_by_the_EU_NEG.png"  alternativ verwenden wenn man ein Logo als asset hat -->
       <div class="text-center">
         <h1 class="text-center text-h2 mt-16 font-weight-bold">Athlete Social Protection Check</h1>
-        <!-- <iframe class="mt-5 mb-3" width="560" height="315" src="https://www.youtube.com/embed/hCribgzayYo"
-          frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen></iframe> -->
+        <iframe class="mt-5" width="560" height="315" src="https://www.youtube.com/embed/hCribgzayYo" frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="ml-3 mt-5 mb- text-subtitle-2 text-center">
+
+          <v-btn class="ml-5" color="primary" variant="elevated" href="https://ww2.unipark.de/uc/SOPROS_athlete_ww/"
+            @click="copyAnswerIdToClipboard" target="_blank">Jump to Organizazion Survey</v-btn>
+        </div>
       </div>
 
       <div class="text-left text-body-3 font-weight-light">
@@ -74,12 +78,11 @@
             <v-select v-model="selected_country" :items="countries" item-title="name" item-value="id" label="Select"
               persistent-hint return-object single-line></v-select>
           </v-card>
-
         </v-col>
       </v-row>
 
 
-      <v-row>
+      <v-row v-if="selected_country.id !== 'EMPTY'">
         <v-col cols="12">
           <v-card class="py-4" color="surface-variant" append-icon="mdi-chat-question" rounded="lg" variant="outlined">
 
@@ -223,8 +226,8 @@
 
                           <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn v-bind="snackbarProps" text="OK" @click="postAnswerAndClose(isActive)"></v-btn>
-                            <v-btn text="Close" @click="isActive.value = false"></v-btn>
+                            <v-btn v-bind="snackbarProps" text="Submit" @click="postAnswerAndClose(isActive)"></v-btn>
+                            <v-btn text="Cancel" @click="isActive.value = false"></v-btn>
                           </v-card-actions>
                         </v-card>
                       </template>
@@ -243,6 +246,22 @@
         </v-col>
       </v-row>
 
+      <v-row>
+        <v-col cols="12">
+          <v-card class="py-4" color="surface-variant" append-icon="mdi-email-fast-outline" rounded="lg"
+            variant="outlined">
+
+            <template #title>
+              <h2 class="text-h5 font-weight-bold">Questions or comments?</h2>
+            </template>
+            <div class="mr-5 ml-5">
+              <v-btn color="primary" variant="elevated" href="mailto:sopros@dshs-koeln.de"
+                @click="copyAnswerIdToClipboard" target="_blank">Contact Sopros Team</v-btn>
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
+
     </v-responsive>
   </v-container>
 </template>
@@ -254,9 +273,6 @@ import { useTheme } from 'vuetify';
 
 
 const questions = ref<[{ status_id: string, question: string, addition: string }]>();
-fetch('/api/country/GER')
-  .then(response => response.json())
-  .then(data => questions.value = data.questions.concat(data.questions_athlete));
 
 const generic_provisions = ref<[{ id: string, name: string, description: string }]>();
 fetch('/api/provisions')
@@ -273,7 +289,7 @@ function getStates(country: { id: string, name: string }): void {
 
 
 const countries = ref<{ id: string, name: string }[]>([]);
-const selected_country = ref<{ id: string, name: string }>({ id: "GER", name: "Deutschland" });
+const selected_country = ref<{ id: string, name: string }>({ id: "EMPTY", name: "no or other Country" });
 fetch('/api/countries')
   .then(response => response.json())
   .then(data => countries.value = data);
