@@ -3,16 +3,14 @@
     <v-responsive class="align-centerfill-height mx-auto" max-width="900">
       <v-row class="mb-5">
         <v-img class="mb-4 mt-4 " height="150" src="@/assets/01_SOPROS_sq.png" />
-        <v-img class="mb-4 mt-4" height="150" src="@/assets/01_EN_Co-Funded_by_the_EU_NEG.png" />
+        <v-img class="mb-4 mt-4" height="150" src="@/assets/eu-logo.jpg" />
       </v-row>
+      <div class="text-right">
+        <v-btn @click="toggleTheme">Light / Dark Mode</v-btn>
+      </div>
       <!-- src="@/assets/01_EN_Co-Funded_by_the_EU_NEG.png"  alternativ verwenden wenn man ein Logo als asset hat -->
 
-      <div class="text-center">
-        <div class="text-body-2 font-weight-light mb-n1">Welcome to</div>
-
-        <h1 class="text-h2 font-weight-bold">SOPROS</h1>
-
-      </div>
+      <h1 class="text-center text-h2 mt-16 font-weight-bold">Athlete Social Protection Check</h1>
       <div class="text-left text-body-3 font-weight-light">
         <div class="mt-2">This Self-Assessment Tool was developed within the
           EU-funded Erasmus+ Project “Assessing, Evaluating and Implementing Athletes' Social Protection in Olympic
@@ -118,10 +116,6 @@
               <v-img position="top right" />
             </template>
 
-            <template #title>
-              <h2 class="text-h5 font-weight-bold">Current provisions</h2>
-            </template>
-
             <h3 class="text-h5 font-weight-bold mt-3 text-center">Disclaimer</h3>
             <div class="ml-3 mt-5">
               Please note that the output of the Tools does not offer legal counsel. Your entitlements to certain
@@ -132,7 +126,9 @@
               be required.
             </div>
 
-            <div v-for="gen_provision in generic_provisions" class="ml-3 mt-16 text-subtitle-2">
+            <h3 class="text-h5 font-weight-bold mt-16 text-center">In your current situation, you have access to:</h3>
+
+            <div v-for="gen_provision in generic_provisions" class="ml-3 mt-12 text-subtitle-2">
               <div class="text-h4 font-weight-bold"
                 v-if="provisions?.filter(item => item.provision_id === gen_provision.id).length != 0 || !['AII', 'APEN', 'PREG', 'PAR', 'OTHER'].includes(gen_provision.id)">
                 {{ gen_provision.name }}
@@ -152,8 +148,7 @@
                       <template v-slot:activator="{ props: activatorProps }">
 
                         <div v-bind="activatorProps" class="text-h6 font-weight-bold">{{ provision.name }}
-
-                          <v-icon size="x-medium" icon="mdi-plus"></v-icon>
+                          <v-icon size="25" icon="mdi-information-slab-circle-outline"></v-icon>
                         </div>
                         <div v-bind="activatorProps" v-html="provision.characteristics"></div>
 
@@ -165,10 +160,10 @@
                             <div v-html="provision.characteristics"></div>
                             <br />
                             <br />
-                            Additions: <div v-html="provision.additions"></div>
+                            Additional Information: <div v-html="provision.additions"></div>
                             <br />
                             <br />
-                            Legal basis: <div v-html="provision.legal_act"></div>
+                            Legal Source: <div v-html="provision.legal_act"></div>
                           </v-card-text>
 
                           <v-card-actions>
@@ -190,11 +185,10 @@
               </v-list>
             </div>
             <div class="ml-3 text-left text-body-3 font-weight-light">
-              <div class="mt-3">
-                To save your personal results, please use the print function of your browser and save it as pdf
-                document.
+              <div class="text-h6 text-center mt-8">
+                Please use the print function of your browser to save your results as a pdf document.
               </div>
-              <h3 class="text-h5 font-weight-bold mt-5 text-center">Filling in the Athlete-Survey</h3>
+              <h3 class="text-h4 font-weight-bold mt-12 text-center">Filling in the Athlete-Survey</h3>
               <div class="mt-2">
                 After having read your personal results, you have the chance to use our Survey to paint an even more
                 comprehensive
@@ -233,6 +227,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { useTheme } from 'vuetify';
 
 
 
@@ -287,11 +282,8 @@ function getIcon(state: string): string {
 }
 
 function getTypeIcon(type_id: string): string {
-  let result = "mdi-torch";
+  let result = "mdi-run";
   if (type_id == "INCOME") {
-    result = "mdi-cash";
-  }
-  else if (type_id == "INCOME") {
     result = "mdi-cash";
   }
   else if (type_id == "LUMP") {
@@ -314,7 +306,6 @@ function getStatusIcon(type_id: string): string {
   if (type_id == "CIT") {
     result = "mdi-home";
   }
-  // TODO: nicht da
   else if (type_id == "STU") {
     result = "mdi-account-school";
   }
@@ -330,7 +321,6 @@ function getStatusIcon(type_id: string): string {
   else if (type_id == "MIL") {
     result = "mdi-star-circle";
   }
-  // TODO: nicht da
   else if (type_id == "CS") {
     result = "mdi-account-tie-hat";
   }
@@ -411,6 +401,13 @@ function getStates(country: { id: string, name: string }): void {
   fetch('/api/country/' + country.id)
     .then(response => response.json())
     .then(data => questions.value = data.questions.concat(data.questions_athlete));
+}
+
+
+const theme = useTheme()
+
+function toggleTheme() {
+  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
 }
 
 </script>
