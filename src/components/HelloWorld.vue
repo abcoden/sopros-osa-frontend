@@ -39,12 +39,9 @@
 
             <v-select v-model="selected_country" :items="countries" item-title="name" item-value="id" label="Select"
               persistent-hint return-object single-line></v-select>
-            <div v-if="selected_country.id === 'OTHER'" class="ml-3">
-              <div>Sorry there is no provision check implemented for your country.</div>
-              <div>Please take part in our survey to give us a better understanding of social protection in your
-                country.</div>
+            <div class="text-center ml-3" v-if="selected_country.id === 'OTHER'">
               <v-btn class="mt-3" color="primary" variant="elevated" href="https://ww2.unipark.de/uc/SOPROS_athlete_ww/"
-                target="_blank">Jump to Survey</v-btn>
+                target="_blank">Jump to Global Athlete Survey Toolkit</v-btn>
             </div>
           </v-card>
         </v-col>
@@ -257,12 +254,12 @@ function getStates(country: { id: string, name: string }): void {
 }
 
 
-const countries = ref<{ id: string, name: string }[]>([{ id: "EMPTY", name: "not selected yet" }]);
-const selected_country = ref<{ id: string, name: string }>({ id: "EMPTY", name: "not selected yet" });
+const countries = ref<{ id: string, name: string }[]>([{ id: "EMPTY", name: "please select" }]);
+const selected_country = ref<{ id: string, name: string }>(countries.value[0]);
 fetch('/api/countries')
   .then(response => response.json())
   .then(data => countries.value = countries.value.concat(data.sort((a: { name: string; }, b: { name: string; }) => a.name.localeCompare(b.name))))
-  .then(otherCountry => countries.value = countries.value.concat({ id: "OTHER", name: "other Country" }));
+  .then(otherCountry => countries.value = countries.value.concat({ id: "OTHER", name: "Other Country" }));
 
 watch(selected_country, (newItem: { id: string, name: string }, oldItem: { id: string, name: string }) => {
   if (newItem.id != oldItem.id) {
