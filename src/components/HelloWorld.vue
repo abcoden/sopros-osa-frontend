@@ -57,8 +57,7 @@
 
       <v-row>
         <v-col cols="12">
-          <v-card class="py-4" color="surface-variant" append-icon="mdi-rocket-launch-outline" rounded="lg"
-            variant="outlined">
+          <v-card class="py-4" color="surface-variant" append-icon="mdi-earth" rounded="lg" variant="outlined">
 
             <template #title>
               <h2 class="text-h5 font-weight-bold">Select country</h2>
@@ -77,8 +76,7 @@
 
       <v-row>
         <v-col cols="12">
-          <v-card class="py-4" color="surface-variant" append-icon="mdi-rocket-launch-outline" rounded="lg"
-            variant="outlined">
+          <v-card class="py-4" color="surface-variant" append-icon="mdi-chat-question" rounded="lg" variant="outlined">
 
             <template #title>
               <h2 class="text-h5 font-weight-bold">Get started</h2>
@@ -97,8 +95,8 @@
                 <div class="text-h6 font-weight-bold">{{ question.question }}</div>
                 {{ question.addition }}
                 <template v-slot:prepend>
-                  <v-icon size="x-large" :color="getIconColor(question.status_id)" :icon="getIcon(question.status_id)"
-                    @click="changeState(question.status_id)"></v-icon>
+                  <v-switch class="mr-3" v-model="checked_questions" color="success" :value="question.status_id"
+                    hide-details></v-switch>
                 </template>
                 <template v-slot:append>
                   <v-icon size="x-large" :icon="getStatusIcon(question.status_id)"></v-icon>
@@ -109,7 +107,7 @@
         </v-col>
       </v-row>
 
-      <v-row class="mt-5" v-if="provisions">
+      <v-row class="mt-5" v-if="provisions && provisions.length != 0">
         <v-col cols=" 12">
           <v-card class="py-4" color="surface-variant" append-icon="mdi-calculator" rounded="lg" variant="outlined">
             <template #image>
@@ -241,6 +239,14 @@ fetch('/api/provisions')
   .then(response => response.json())
   .then(data => generic_provisions.value = data);
 
+const provisions = ref<[{ id: string, name: string, provision_id: string, type_id: string, status_id: string, characteristics: string, legal_act: string, additions: string }] | []>();
+
+function getStates(country: { id: string, name: string }): void {
+  fetch('/api/country/' + country.id)
+    .then(response => response.json())
+    .then(data => questions.value = data.questions.concat(data.questions_athlete));
+}
+
 
 const countries = ref<{ id: string, name: string }[]>([]);
 const selected_country = ref<{ id: string, name: string }>({ id: "GER", name: "Deutschland" });
@@ -248,39 +254,63 @@ fetch('/api/countries')
   .then(response => response.json())
   .then(data => countries.value = data);
 
+watch(selected_country, (newItem: { id: string, name: string }, oldItem: { id: string, name: string }) => {
+  if (newItem.id != oldItem.id) {
+    getStates(newItem)
+    provisions.value = []
+    checked_questions.value = []
+  }
+})
 
 
 
+function calcProvisions(): void {
+  const post_checked_questions = '["' + checked_questions.value.join('", "') + '"]'
+  //console.log(post_checked_questions)
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: post_checked_questions
+  };
+  fetch('/api/calc/' + selected_country.value.id, requestOptions)
+    .then(response => response.json())
+    .then(data => provisions.value = data);
+  //console.log(provisions.value)
+}
 const checked_questions = ref<string[]>([]);
+watch(checked_questions, (newItem, oldItem) => {
+  calcProvisions()
+})
+
+
 const answer_id = ref<string>("Click the button 'SAVE PROVISIONS FOR ANALYSIS' to generate your personal ID")
 
 function copyAnswerIdToClipboard() {
   navigator.clipboard.writeText(answer_id.value)
 }
 
-function hasState(newState: string): boolean {
-  return checked_questions.value.includes(newState);
+function postAnswer(): void {
+  const post_checked_questions = '["' + checked_questions.value.join('", "') + '"]'
+  //(post_checked_questions)
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: post_checked_questions
+  };
+  fetch('/api/answer?country_id=' + selected_country.value.id, requestOptions)
+    .then(response => response.json())
+    .then(data => answer_id.value = data.id)
+    .then(saveAnswerIdToClipboard => navigator.clipboard.writeText(answer_id.value));
 }
 
-function changeState(state: string): void {
-  if (hasState(state)) {
-    checked_questions.value = checked_questions.value.filter(e => e !== state);
-  }
-  else {
-    checked_questions.value.push(state);
-  }
-  calcProvisions() // or 'provisions.value = []' for extra call
-  //console.log(checked_questions.value);
+
+// switch light dark mode
+const theme = useTheme()
+function toggleTheme() {
+  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
 }
 
-function getIconColor(state: string): string {
-  return (hasState(state) ? "success" : "error")
-}
-
-function getIcon(state: string): string {
-  return (hasState(state) ? "mdi-check-circle-outline" : "mdi-close-circle-outline")
-}
-
+// calc Icons
 function getTypeIcon(type_id: string): string {
   let result = "mdi-run";
   if (type_id == "INCOME") {
@@ -358,56 +388,6 @@ function getStatusIcon(type_id: string): string {
     result = "mdi-medal-outline";
   }
   return result;
-}
-
-function postAnswer(): void {
-  const post_checked_questions = '["' + checked_questions.value.join('", "') + '"]'
-  //(post_checked_questions)
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: post_checked_questions
-  };
-  fetch('/api/answer?country_id=' + selected_country.value.id, requestOptions)
-    .then(response => response.json())
-    .then(data => answer_id.value = data.id)
-    .then(saveAnswerIdToClipboard => navigator.clipboard.writeText(answer_id.value));
-}
-
-const provisions = ref<[{ id: string, name: string, provision_id: string, type_id: string, status_id: string, characteristics: string, legal_act: string, additions: string }] | []>();
-function calcProvisions(): void {
-  const post_checked_questions = '["' + checked_questions.value.join('", "') + '"]'
-  //console.log(post_checked_questions)
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: post_checked_questions
-  };
-  fetch('/api/calc/' + selected_country.value.id, requestOptions)
-    .then(response => response.json())
-    .then(data => provisions.value = data);
-  //console.log(provisions.value)
-}
-
-watch(selected_country, (newItem: { id: string, name: string }, oldItem: { id: string, name: string }) => {
-  if (newItem.id != oldItem.id) {
-    getStates(newItem)
-    provisions.value = []
-    checked_questions.value = []
-  }
-
-})
-function getStates(country: { id: string, name: string }): void {
-  fetch('/api/country/' + country.id)
-    .then(response => response.json())
-    .then(data => questions.value = data.questions.concat(data.questions_athlete));
-}
-
-
-const theme = useTheme()
-
-function toggleTheme() {
-  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
 }
 
 </script>
