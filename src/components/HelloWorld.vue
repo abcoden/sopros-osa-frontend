@@ -18,7 +18,7 @@
           EU-funded Erasmus+ Project “Assessing, Evaluating and Implementing Athletes' Social Protection in Olympic
           Sports – <a target="_blank" href="https://www.dshs-koeln.de/iesf/sopros">SOPROS</a>".
         </div>
-        <iframe class="mt-5" width="800" height="450" src="https://www.youtube.com/embed/IPU67D3Ql6Y" frameborder="0"
+        <iframe class="mt-5" width="800" height="450" src="https://www.youtube.com/embed/4J18b-vmd84" frameborder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         <div class="ml-3 mt-5 mb- text-subtitle-2 text-center">
           <v-btn class="ml-5" color="primary" variant="elevated"
