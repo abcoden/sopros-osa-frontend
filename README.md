@@ -63,3 +63,12 @@ yarn build
 (Repeat for npm, pnpm, and bun with respective commands.)
 
 Once the build process is completed, your application will be ready for deployment in a production environment.
+
+### Building a Dockerimage
+
+```bash
+podman build -t localhost/abcoden/sopros_osa_frontend:latest .
+podman tag localhost/abcoden/sopros_osa_frontend docker.io/abcoden/sopros_osa_frontend
+# podman login docker.io
+podman push docker.io/abcoden/sopros_osa_frontend
+```
