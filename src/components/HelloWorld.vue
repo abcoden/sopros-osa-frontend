@@ -228,6 +228,54 @@
         </v-col>
       </v-row>
 
+      <v-row>
+        <v-col cols="12">
+          <v-card class="py-4" color="surface-variant" append-icon="mdi-account-group" rounded="lg" variant="outlined">
+
+            <template #title>
+              <h2 class="text-h5 font-weight-bold">Disclaimer</h2>
+            </template>
+            <!-- div class="mr-5 ml-5 text-center">
+              <h3 class="text-h6 font-weight-bold mt-6">Coordinator</h3>
+              <v-img class="mb-4 mt-4" height="100" src="@/assets/1_DSHS-Logo.jpg" />
+              German Sport University Cologne (DE)
+
+              <h3 class="text-h6 font-weight-bold mt-12">Academic Partners</h3>
+              <v-img class="mb-4 mt-4" height="100" src="@/assets/EHU.png" />
+              Edge Hill University (UK)
+              <v-img class="mb-4 mt-4" height="100" src="@/assets/ISG.png" />
+              Institute for Sport Governance (PL)
+              <v-img class="mb-4 mt-4" height="100" src="@/assets/SEA.png" />
+              Sport Evolution Alliance (PT)
+              <v-img class="mb-4 mt-4" height="100" src="@/assets/Rijeka.jpg" />
+              University of Rijeka, Faculty of Law (HR)
+
+              <h3 class="text-h6 font-weight-bold mt-12">Policy Partners</h3>
+              <v-img class="mb-4 mt-4" height="100" src="@/assets/EASE.svg" />
+              European Association of Sport Employers (FR)
+              <v-img class="mb-4 mt-4" height="100" src="@/assets/EAPA.jpg" />
+              European Athletes and Players Association (NL)
+              <v-img class="mb-4 mt-4" height="100" src="@/assets/EOA.jpeg" />
+              European Olympic Academies (DE)
+
+              <h3 class="text-h6 font-weight-bold mt-12">Associated Partner </h3>
+              <v-img class="mb-4 mt-4" height="100" src="@/assets/ILO.svg" />
+              International Labour Organization (CH)
+
+            </div> -->
+
+            <div class="ml-5 mt-12">The European Commission's support for the production of this publication does not
+              constitute an endorsement of the contents, which reflect the views only of the authors, and the Commission
+              cannot be held responsible for any use which may be made of the information contained therein.
+            </div>
+
+            <div class="mr-5 ml-5 mt-12">
+              <a target="_blank" href="https://www.dshs-koeln.de/index.php?id=19953">Imprint</a>
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
+
     </v-responsive>
   </v-container>
 </template>
