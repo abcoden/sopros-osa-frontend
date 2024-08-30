@@ -34,7 +34,9 @@
           <v-card class="py-4" color="surface-variant" append-icon="mdi-earth" rounded="lg" variant="outlined">
 
             <template #title>
-              <h2 class="text-h5 font-weight-bold">Select country to start Athlete Social Protection Check</h2>
+              <h2 class="text-h5 font-weight-bold">Select country and language to start your Athlete Social Protection
+                Check
+              </h2>
             </template>
 
             <v-select v-model="selected_country" :items="countries" item-title="name" item-value="id" label="Select"
@@ -46,8 +48,6 @@
           </v-card>
         </v-col>
       </v-row>
-
-
       <v-row v-if="selected_country.id !== 'EMPTY' && selected_country.id !== 'OTHER'">
         <v-col cols="12">
           <v-card class="py-4" color="surface-variant" append-icon="mdi-chat-question" rounded="lg" variant="outlined">
@@ -77,6 +77,13 @@
                 </template>
               </v-list-item>
             </v-list>
+
+            <h3 class="text-h5 font-weight-bold mt-8 text-center">Disclaimer</h3>
+            <div class="ml-3 mt-5">
+              Please note that the answers below are for information only and do not provide legal advice. You may wish
+              to
+              seek legal advice from a legal professional regarding your specific circumstances.
+            </div>
           </v-card>
         </v-col>
       </v-row>
@@ -88,20 +95,12 @@
               <v-img position="top right" />
             </template>
 
-            <h3 class="text-h5 font-weight-bold mt-3 text-center">Disclaimer</h3>
-            <div class="ml-3 mt-5">
-              Please note that the output of the Tools does not offer legal counsel. Your entitlements to certain
-              provisions
-              and
-              measures may depend on individual factors which cannot be captured by the Tool. Professional counsel and
-              advise may
-              be required.
-            </div>
-
-            <h3 class="text-h5 font-weight-bold mt-16 text-center">In your current situation, you have access to:</h3>
+            <template #title>
+              <h2 class="text-h5 font-weight-bold">In your current situation, you have access to:</h2>
+            </template>
 
             <div v-for="gen_provision in generic_provisions" class="ml-3 mt-12 text-subtitle-2">
-              <div class="text-h4 font-weight-bold"
+              <div class="text-h5 font-weight-bold"
                 v-if="provisions?.filter(item => item.provision_id === gen_provision.id).length != 0 || !['AII', 'APEN', 'PREG', 'PAR', 'OTHER'].includes(gen_provision.id)">
                 {{ gen_provision.name }}
               </div>
@@ -157,56 +156,56 @@
               </v-list>
             </div>
             <div class="ml-3 text-left text-body-3 font-weight-light">
-              <div class="text-h6 text-center mt-8">
-                Please use the print function of your browser to save your results as a pdf document.
-              </div>
-              <h3 class="text-h4 font-weight-bold mt-12 text-center">Filling in the Athlete-Survey</h3>
+              <h3 class="text-h4 font-weight-bold mt-12 text-center">What's next?</h3>
               <div class="mt-2">
-                After having read your personal results, you have the chance to use our Survey to paint an even more
-                comprehensive
-                picture about your social protection situation and to share your personal views about it. Through your
-                participation
-                in our Survey, you contribute to the identification of existing gaps and the development of new social
-                protection
-                measures. Ultimately, you support the project team’s endeavour to improve athletes’ welfare in your
-                country
-                and
-                beyond.
-              </div>
+                <ol class="ml-5 text-h6">
+                  <li>Use the print function of your browser to <b>save</b> your results as a pdf document.</li>
+                  <li>Please click on the "Save Provisions For Analysis" to generate your <b>personal ID</b>. You will
+                    need this to start the survey. It will automatically be copied to your clipboard.
+                    <div class="ml-3 mt-3 mb-3 text-subtitle-2 text-center">
+                      <v-snackbar :timeout="2000" color="success">
+                        <template v-slot:activator="{ props: snackbarProps }">
+                          <v-dialog max-width="700">
+                            <template v-slot:activator="{ props: activatorProps }">
+                              <v-btn prepend-icon="mdi-content-save-cog" size="x-large" color="primary"
+                                variant="elevated" v-bind="activatorProps">Save provisions for
+                                Analysis</v-btn>
+                            </template>
 
-              <div class="ml-3 mt-5 text-subtitle-2 text-center">
-                <v-snackbar :timeout="2000" color="success">
-                  <template v-slot:activator="{ props: snackbarProps }">
-                    <v-dialog max-width="700">
-                      <template v-slot:activator="{ props: activatorProps }">
-                        <v-btn color="primary" variant="elevated" v-bind="activatorProps">Save provisions for
-                          Analysis</v-btn>
-                      </template>
+                            <template v-slot:default="{ isActive }">
+                              <v-card title="Save Provisions">
+                                <v-card-text>
+                                  Your selected states an provisions will be saved for analysis.
+                                  An ID is generated, which should be used for the survey
+                                </v-card-text>
 
-                      <template v-slot:default="{ isActive }">
-                        <v-card title="Save Provisions">
-                          <v-card-text>
-                            Your selected states an provisions will be saved for analysis.
-                            An ID is generated, which should be used for the survey
-                          </v-card-text>
-
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn v-bind="snackbarProps" text="Submit" @click="postAnswerAndClose(isActive)"></v-btn>
-                            <v-btn text="Cancel" @click="isActive.value = false"></v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </template>
-                    </v-dialog>
-                  </template>
-                  ID '<strong>{{ answer_id }}</strong>' copied to clipboard
-                </v-snackbar>
+                                <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn v-bind="snackbarProps" text="Submit"
+                                    @click="postAnswerAndClose(isActive)"></v-btn>
+                                  <v-btn text="Cancel" @click="isActive.value = false"></v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </template>
+                          </v-dialog>
+                        </template>
+                        ID '<strong>{{ answer_id }}</strong>' copied to clipboard
+                      </v-snackbar>
+                    </div>
+                    <h3 class="text-h6 font-weight-bold ml-3 mb-5 text-center">ID: {{ answer_id }}</h3>
+                  </li>
+                  <li>Please click on "Jump to Athelete Survey" to complete the <b>Athlete Survey</b> and express your
+                    opinions
+                    and
+                    perceptions.
+                    <div class="ml-3 mt-5 text-subtitle-2 text-center">
+                      <v-btn prepend-icon="mdi-file-document-edit" size="x-large" color="primary" variant="elevated"
+                        href="https://ww2.unipark.de/uc/SOPROS_athletes_country" @click="copyAnswerIdToClipboard"
+                        target="_blank">Jump to Athelete Survey</v-btn>
+                    </div>
+                  </li>
+                </ol>
               </div>
-              <div class="ml-3 mt-5 text-subtitle-2 text-center">
-                <v-btn color="primary" variant="elevated" href="https://ww2.unipark.de/uc/SOPROS_athletes_country"
-                  @click="copyAnswerIdToClipboard" target="_blank">Jump to Survey</v-btn>
-              </div>
-              <h3 class="text-h6 font-weight-bold mt-5 text-center">ID: {{ answer_id }}</h3>
             </div>
           </v-card>
         </v-col>
@@ -338,7 +337,7 @@ watch(checked_questions, (newItem, oldItem) => {
 })
 
 
-const answer_id = ref<string>("Click the button 'SAVE PROVISIONS FOR ANALYSIS' to generate your personal ID")
+const answer_id = ref<string>("Your personal ID will be displayed here.")
 
 function copyAnswerIdToClipboard() {
   navigator.clipboard.writeText(answer_id.value)
