@@ -38,6 +38,13 @@
                 Check
               </h2>
             </template>
+            <!-- <div class="text-center">
+              <v-btn icon class="ml-3"><v-img width="25" src="@/assets/de.svg"></v-img></v-btn>
+              <v-btn size="x-large" color="primary" icon class="ml-3"><v-img width="40"
+                  src="@/assets/de.svg"></v-img></v-btn>
+              <v-btn icon class="ml-3"><v-img width="50" src="@/assets/de.svg"></v-img></v-btn>
+            </div> -->
+
 
             <v-select v-model="selected_country" :items="countries" item-title="name" item-value="id" label="Select"
               persistent-hint return-object single-line></v-select>
@@ -67,7 +74,7 @@
             <v-list lines="two">
               <v-list-item v-for="question in questions" :key="question.status_id">
                 <div class="text-h6 font-weight-bold">{{ question.question }}</div>
-                {{ question.addition }}
+                <div v-html="question.addition"></div>
                 <template v-slot:prepend>
                   <v-switch class="mr-3" v-model="checked_questions" color="success" :value="question.status_id"
                     hide-details></v-switch>
@@ -194,14 +201,14 @@
                     </div>
                     <h3 class="text-h6 font-weight-bold ml-3 mb-5 text-center">ID: {{ answer_id }}</h3>
                   </li>
-                  <li>Please click on "Jump to Athelete Survey" to complete the <b>Athlete Survey</b> and express your
+                  <li>Please click on "Jump to Athlete Survey" to complete the <b>Athlete Survey</b> and express your
                     opinions
                     and
                     perceptions.
                     <div class="ml-3 mt-5 text-subtitle-2 text-center">
                       <v-btn prepend-icon="mdi-file-document-edit" size="x-large" color="primary" variant="elevated"
                         href="https://ww2.unipark.de/uc/SOPROS_athletes_country" @click="copyAnswerIdToClipboard"
-                        target="_blank">Jump to Athelete Survey</v-btn>
+                        target="_blank">Jump to Athlete Survey</v-btn>
                     </div>
                   </li>
                 </ol>
