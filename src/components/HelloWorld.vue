@@ -167,15 +167,15 @@
               <div class="mt-2">
                 <ol class="ml-5 text-h6">
                   <li>Use the print function of your browser to <b>save</b> your results as a pdf document.</li>
-                  <li>Please click on the "Save Provisions For Analysis" to generate your <b>personal ID</b>. You will
-                    need this to start the survey. It will automatically be copied to your clipboard.
+                  <li>Please click on the button "Submit Data For Analysis". This also generates your <b>personal ID</b>
+                    which you will need this to start the survey. It will automatically be copied to your clipboard.
                     <div class="ml-3 mt-3 mb-3 text-subtitle-2 text-center">
                       <v-snackbar :timeout="2000" color="success">
                         <template v-slot:activator="{ props: snackbarProps }">
                           <v-dialog max-width="700">
                             <template v-slot:activator="{ props: activatorProps }">
                               <v-btn prepend-icon="mdi-content-save-cog" size="x-large" color="primary"
-                                variant="elevated" v-bind="activatorProps">Save provisions for
+                                variant="elevated" v-bind="activatorProps">Submit Data for
                                 Analysis</v-btn>
                             </template>
 
