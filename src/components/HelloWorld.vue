@@ -442,7 +442,7 @@ function getStatusIcon(type_id: string): string {
     result = "mdi-account-cash-outline";
   }
   else if (type_id == "EAS") {
-    result = "mdi-account-cash-outline";
+    result = "mdi-trophy";
   }
   else if (type_id == "NTM") {
     result = "mdi-account-multiple-outline";
@@ -452,6 +452,18 @@ function getStatusIcon(type_id: string): string {
   }
   else if (type_id == "OGM") {
     result = "mdi-medal-outline";
+  }
+  else if (type_id == "PCAT1") {
+    result = "mdi-numeric-1-box-outline";
+  }
+  else if (type_id == "SH") {
+    result = "mdi-account-cash-outline";
+  }
+  else if (type_id == "OGWCM") {
+    result = "mdi-medal-outline";
+  }
+  else if (type_id == "DPM") {
+    result = "mdi-arrow-up-bold-box-outline";
   }
   return result;
 }
