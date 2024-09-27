@@ -64,11 +64,54 @@
             </template>
 
             <div class="mr-5 ml-5 mb-3">
-              The Tool asks you some simple
-              questions which refer to your social status and your membership(s) as an elite athlete. Based on the
-              information you provide an algorithm calculates your personal social protection situation.
+              The Tool asks you some simple questions which refer to your social status and your membership(s) as an
+              elite athlete. Based on the information you provide an algorithm calculates your personal social
+              protection situation.
               <br></br>
-              If you click on the outcome for each provision, further information can be accessed.
+              Your personal outcome will be shown further down the page when checking at least one of the questions.
+
+              <div class="mt-3 mb-5  text-subtitle-2 text-center">
+                <v-dialog max-width="700">
+                  <template v-slot:activator="{ props: activatorProps }">
+                    <v-btn prepend-icon="mdi-information-outline" color="primary" variant="elevated"
+                      v-bind="activatorProps">
+                      More information and instructions
+                    </v-btn>
+                  </template>
+
+                  <template v-slot:default="{ isActive }">
+                    <v-card title="Information and Instructions">
+                      <v-card-text>
+                        <b>Scope of the Tool:</b> Everybody is invited to use this Tool. However, it is specifically
+                        developed for elite athletes in Olympic sports. National laws and policies have been analysed to
+                        design an algorithm which calculates your personal social protection situation. Policies and
+                        measures from actors at lower levels (e.g., regional or local) and measures only applicable to
+                        athletes in some sports (e.g., offered by a sport federation) are not integrated into the
+                        algorithm. The Athlete Survey Toolkit – see button below the Tool’s output – offers the
+                        opportunity to share such individual measures with the project team.
+                        <br></br><br></br>
+                        While this tool is designed mainly for Olympic athletes, also Paralympic athletes may fill in
+                        the questions and participate in the subsequent Athlete Survey. The tool is, however, not able
+                        to capture the institutional structures, policies and measures (e.g., by the National Paralympic
+                        Committees) from which specific social protection measures for Paralympic athletes arise.
+                        <br></br><br></br>
+                        For athletes in professional sports, specific rules might apply based on collective agreements.
+                        These are also not captured in the Tool’s algorithm.
+                        <br></br><br></br>
+                        <b>Instructions:</b> All you have to do is to check the switch for each question you answer with
+                        “Yes” because it currently applies to you. Your personalised output is calculated and displayed
+                        below the question section. You can save your results as a pdf through your browser’s print
+                        function and submit your data for the analysis.
+                      </v-card-text>
+
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn text="Close" @click="isActive.value = false"></v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </template>
+                </v-dialog>
+              </div>
             </div>
 
             <v-list lines="two">
@@ -103,8 +146,47 @@
             </template>
 
             <template #title>
-              <h2 class="text-h5 font-weight-bold">In your current situation, you have access to:</h2>
+              <h2 class="text-h5 font-weight-bold">Your personal social protection situation</h2>
             </template>
+            <div class="mr-5 ml-5 mb-3 text-center">
+              <v-dialog max-width="700">
+                <template v-slot:activator="{ props: activatorProps }">
+                  <v-btn prepend-icon="mdi-information-outline" color="primary" variant="elevated"
+                    v-bind="activatorProps">
+                    More information and interpretation of the output
+                  </v-btn>
+                </template>
+
+                <template v-slot:default="{ isActive }">
+                  <v-card title="Information and Instructions">
+                    <v-card-text>
+                      You can now see your current social protection situation. Access to each provision and measure
+                      arises from the selected statuses and memberships based on the answered questions.
+                      <br></br><br></br>
+                      The icons on the right-hand side indicate which status leads to the benefit. You can always move
+                      up to the questions section to reassure yourself about the meaning of each icon.
+                      <br></br><br></br>
+                      There are different types of benefits shown in the outcome which are highlighted by an icon on the
+                      left-hand side:
+                      <br></br><br></br>
+                      <v-icon size="x-large" icon="mdi-cash" /> = Cash benefits
+                      <br></br><br></br>
+                      <v-icon size="x-large" icon="mdi-handshake" /> = Benefits in kind
+                      <br></br><br></br>
+                      <v-icon size="x-large" icon="mdi-clock-outline" /> = Leave provisions
+                      Icon clock = Leave provisions
+                      <br></br><br></br>
+                      <v-icon size="x-large" icon="mdi-run" /> = Athlete-specific measure
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn text="Close" @click="isActive.value = false"></v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </template>
+              </v-dialog>
+            </div>
 
             <div v-for="gen_provision in generic_provisions" class="ml-3 mt-12 text-subtitle-2">
               <div class="text-h5 font-weight-bold"
@@ -180,10 +262,14 @@
                             </template>
 
                             <template v-slot:default="{ isActive }">
-                              <v-card title="Save Provisions">
+                              <v-card title="Submit Data">
                                 <v-card-text>
-                                  Your selected states an provisions will be saved for analysis.
-                                  An ID is generated, which should be used for the survey
+                                  Please confirm that your <b>responses to the questions reflect your current status</b>
+                                  and life circumstances.
+                                  <br></br><br></br>
+                                  When submitting the data, a <b>unique ID</b> is generated and automatically copied to
+                                  your clipboard. You will see a green notification. This ID is required to participate
+                                  in the <b>Athlete Survey</b>. Please paste it when requested.
                                 </v-card-text>
 
                                 <v-card-actions>
