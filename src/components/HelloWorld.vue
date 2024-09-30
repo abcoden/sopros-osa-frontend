@@ -21,7 +21,7 @@
         <iframe class="mt-5" width="800" height="450" src="https://www.youtube.com/embed/4J18b-vmd84" frameborder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         <div class="ml-3 mt-5 mb- text-subtitle-2 text-center">
-          <v-btn class="ml-5" color="primary" variant="elevated"
+          <v-btn class="ml-5" prepend-icon="mdi-information-outline" color="primary" variant="elevated"
             href="https://www.dshs-koeln.de/en/institute-of-european-sport-development-and-leisure-studies/research-projects/ongoing-projects/sopros/resources-on-social-protection/"
             @click="copyAnswerIdToClipboard" target="_blank">Learn more about Social Protection</v-btn>
         </div>
