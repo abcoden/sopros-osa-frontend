@@ -174,7 +174,6 @@
                       <v-icon size="x-large" icon="mdi-handshake" /> = Benefits in kind
                       <br></br><br></br>
                       <v-icon size="x-large" icon="mdi-clock-outline" /> = Leave provisions
-                      Icon clock = Leave provisions
                       <br></br><br></br>
                       <v-icon size="x-large" icon="mdi-run" /> = Athlete-specific measure
                     </v-card-text>
