@@ -244,10 +244,11 @@
               </v-list>
             </div>
             <div class="ml-3 text-left text-body-3 font-weight-light">
-              <h3 class="text-h4 font-weight-bold mt-12 text-center">What's next?</h3>
+              <div class="text-h6">Use the print function of your browser to <b>save</b> your results as a pdf document.
+              </div>
+              <h3 class="text-h4 font-weight-bold mt-12 text-center">What's next - We need YOUR opinion</h3>
               <div class="mt-2">
                 <ol class="ml-5 text-h6">
-                  <li>Use the print function of your browser to <b>save</b> your results as a pdf document.</li>
                   <li>Please click on the button "Submit Data For Analysis". This also generates your <b>personal ID</b>
                     which you will need this to start the survey. It will automatically be copied to your clipboard.
                     <div class="ml-3 mt-3 mb-3 text-subtitle-2 text-center">
