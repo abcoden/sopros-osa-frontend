@@ -287,10 +287,8 @@
                     </div>
                     <h3 class="text-h6 font-weight-bold ml-3 mb-5 text-center">ID: {{ answer_id }}</h3>
                   </li>
-                  <li>Click on "Jump to Athlete Survey" to complete the <b>Athlete Survey</b> and express your
-                    opinions
-                    and
-                    perceptions.
+                  <li>Click on "Jump to Athlete Survey" to complete the <b>Athlete Survey</b> and share your personal
+                    opinions and views.
                     <div class="ml-3 mt-5 text-subtitle-2 text-center">
                       <v-btn prepend-icon="mdi-file-document-edit" size="x-large" color="primary" variant="elevated"
                         href="https://ww2.unipark.de/uc/SOPROS_athletes_country" @click="copyAnswerIdToClipboard"
