@@ -244,7 +244,7 @@
               </v-list>
             </div>
             <div class="ml-3 text-left text-body-3 font-weight-light">
-              <div class="text-h6">Use your browser print function to <b>save</b> your results as a pdf document
+              <div class="text-h6">Use your browser print function to <b>save</b> your results as a pdf document.
               </div>
               <h3 class="text-h4 font-weight-bold mt-12 text-center">What's next? We need YOUR opinion!</h3>
               <div class="mt-2">
