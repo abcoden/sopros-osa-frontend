@@ -354,9 +354,9 @@
 
             </div> -->
 
-            <div class="ml-5 mt-12">The European Commission's support for the production of this publication does not
-              constitute an endorsement of the contents, which reflect the views only of the authors, and the Commission
-              cannot be held responsible for any use which may be made of the information contained therein.
+            <div class="ml-5 mt-12">Funded by the European Union. Views and opinions expressed are however those of the
+              author(s) only and do not necessarily reflect those of the European Union or the European Education and
+              Culture Executive Agency (EACEA). Neither the European Union nor EACEA can be held responsible for them.
             </div>
 
             <div class="mr-5 ml-5 mt-12">
