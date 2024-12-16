@@ -549,6 +549,9 @@ function getStatusIcon(type_id: string): string {
   else if (type_id == "DPM") {
     result = "mdi-arrow-up-bold-box-outline";
   }
+  else if (type_id == "SIC") {
+    result = "mdi-login";
+  }
   return result;
 }
 
